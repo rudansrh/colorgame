@@ -86,8 +86,8 @@ while running:
     if (pygame.time.get_ticks() - startTime)/1000 > cooltime:
         startTime = pygame.time.get_ticks()
         if cooltime > mincooltime:
-            cooltime -= 0.01
-            cooltime = round(cooltime,2)
+            cooltime -= 0.015
+            cooltime = round(cooltime,3)
         while 1:
             a = random.randint(1,2)
             c = random.randint(0,1)
