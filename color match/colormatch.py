@@ -25,6 +25,7 @@ b_cir = pygame.transform.scale(b_cir,(e_size,e_size))
 circles = [r_cir, b_cir]
 
 myFont = pygame.font.Font("CookieRun Regular.ttf", 40)
+tjfaudFont = pygame.font.Font("CookieRun Regular.ttf", 30)
 
 #색 설정
 black = (0,0,0)
@@ -56,7 +57,9 @@ while running:
     else:
         screen.blit(player2, (335, 200))
     scoreText = myFont.render(f"{score}", True,white)
-    screen.blit(scoreText, (390, 10))
+    screen.blit(scoreText, (380, 10))
+    tjfaudText = tjfaudFont.render("마우스 클릭으로 플레이", True,white)
+    screen.blit(tjfaudText, (280, 490))
     
     dell = -1
     for i in range(len(enemylist)):
@@ -100,7 +103,21 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_pos = event.pos
             playerstate = 1-playerstate
     pygame.display.flip()
+
+running = True
+while running:
+    screen.fill(bgcolor)
+    
+    myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
+    scoreText = myFont.render(f"점수 : {score}", True,white)
+    screen.blit(scoreText, (300, 250))
+    pygame.display.flip()
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
