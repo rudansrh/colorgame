@@ -46,6 +46,8 @@ cooltime = 1.3
 mincooltime = 0.5
 clock = pygame.time.Clock()
 startTime = 0
+lasta = 0
+lastc = 0
 playerstate = 0 #0: 왼-빨, 오른-파  1: 왼-파, 오른-빨
 
 running = True
@@ -85,17 +87,21 @@ while running:
         startTime = pygame.time.get_ticks()
         if cooltime > mincooltime:
             cooltime -= 0.01
-        a = random.randint(1,2)
+            cooltime = round(cooltime,2)
+        while 1:
+            a = random.randint(1,2)
+            c = random.randint(0,1)
+            if a != lasta or c != lastc:
+                lastc = c
+                lasta = a
+                break
         if a == 1:
-            s_pos = [-90,220]
+            s_pos = [-90,225]
             direc = 1
-            c = random.randint(0,1) #0:빨, 1:파
             enemylist.append([s_pos, direc, c])
         else:
-            s_pos = [820, 220]
+            s_pos = [820, 225]
             direc = -1
-            c = random.randint(0,1) #0:빨, 1:파
-            e_image = circles[c]
             enemylist.append([s_pos, direc, c])
             
     
