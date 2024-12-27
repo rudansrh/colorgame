@@ -91,6 +91,7 @@ while running:
                 else:
                     test = pygame.image.load("이미지 저장\\blue.png")
                     test = pygame.transform.scale(test,(e_size,e_size))
+                test.set_alpha(200)
                 enemylist[i].append(test)
             screen.blit(circles[enemylist[i][2]], tuple(enemylist[i][0]))
     if dell != -1:
