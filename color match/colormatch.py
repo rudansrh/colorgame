@@ -67,21 +67,34 @@ while running:
     for i in range(len(enemylist)):
         enemylist[i][0][0] += enemylist[i][1]*speed
         e_rect = pygame.Rect(int(enemylist[i][0][0]),int(enemylist[i][0][1]),e_size,e_size)
-        screen.blit(circles[enemylist[i][2]], tuple(enemylist[i][0]))
-        if e_rect.colliderect(Lrect) or e_rect.colliderect(Rrect):
-            if playerstate == 0:
-                if (enemylist[i][1] == 1 and enemylist[i][2] == 0) or (enemylist[i][1] == -1 and enemylist[i][2] == 1):
-                    score += 10
+        if len(enemylist[i]) == 4:
+            imageE = enemylist[i][3]
+            imageE.set_alpha(imageE.get_alpha()-10)
+            if imageE.get_alpha() <= 0:
+                dell = i
+            screen.blit(imageE, tuple(enemylist[i][0]))
+        else:
+            if e_rect.colliderect(Lrect) or e_rect.colliderect(Rrect):
+                if playerstate == 0:
+                    if (enemylist[i][1] == 1 and enemylist[i][2] == 0) or (enemylist[i][1] == -1 and enemylist[i][2] == 1):
+                        score += 10
+                    else:
+                        running = False
                 else:
-                    running = False
-            else:
-                if (enemylist[i][1] == 1 and enemylist[i][2] == 1) or (enemylist[i][1] == -1 and enemylist[i][2] == 0):
-                    score += 10
+                    if (enemylist[i][1] == 1 and enemylist[i][2] == 1) or (enemylist[i][1] == -1 and enemylist[i][2] == 0):
+                        score += 10
+                    else:
+                        running = False
+                if enemylist[i][2] == 0:
+                    test = pygame.image.load("이미지 저장\\red.png")
+                    test = pygame.transform.scale(test,(e_size,e_size))
                 else:
-                    running = False
-            dell = i
+                    test = pygame.image.load("이미지 저장\\blue.png")
+                    test = pygame.transform.scale(test,(e_size,e_size))
+                enemylist[i].append(test)
+            screen.blit(circles[enemylist[i][2]], tuple(enemylist[i][0]))
     if dell != -1:
-        del(enemylist[dell])
+        del(enemylist[dell])    
         
     if (pygame.time.get_ticks() - startTime)/1000 > cooltime:
         startTime = pygame.time.get_ticks()
