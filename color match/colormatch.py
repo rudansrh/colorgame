@@ -97,15 +97,22 @@ while running:
         screen.blit(player1, (335, 200))
     else:
         screen.blit(player2, (335, 200))
-        
+    
+    if score < 10:
+        textpos = (370, 10)
+    elif score < 100:
+        textpos = (355, 10)
+    else:
+        textpos = (345, 10)
     scoreText = myFont.render(f"{score}점", True,white)
-    screen.blit(scoreText, (350, 10))
+    screen.blit(scoreText, textpos)
+    
     if start == 1:
         tjfaudText = tjfaudFont.render("마우스 클릭으로 플레이", True,white)
-        screen.blit(tjfaudText, (280, 490))
+        screen.blit(tjfaudText, (275, 490))
     else:
         tjfaudText = tjfaudFont.render("- Click To Start -", True,white)
-        screen.blit(tjfaudText, (300, 490))
+        screen.blit(tjfaudText, (285, 490))
     
     if start == 0:
         pygame.display.flip()
