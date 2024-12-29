@@ -6,6 +6,8 @@ pygame.init()
 
 score = 0
 e_size = 50
+start = 0
+end = 0
 
 #화면 크기 설정
 screen_width = 800
@@ -23,6 +25,10 @@ r_cir = pygame.transform.scale(r_cir,(e_size,e_size))
 b_cir = pygame.image.load("이미지 저장\\blue.png")
 b_cir = pygame.transform.scale(b_cir,(e_size,e_size))
 circles = [r_cir, b_cir]
+
+again = pygame.image.load("이미지 저장\\again.png")
+again = pygame.transform.scale(again,(80,80))
+againRect = pygame.Rect(370, 330, 80,80)
 
 myFont = pygame.font.Font("CookieRun Regular.ttf", 40)
 tjfaudFont = pygame.font.Font("CookieRun Regular.ttf", 30)
@@ -54,15 +60,57 @@ running = True
 while running:
     clock.tick(60)
     screen.fill(bgcolor)
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mousepos = event.pos
+            if end == 1 and againRect.collidepoint(mousepos):
+                #재시작
+                cooltime = 1.3
+                startTime = pygame.time.get_ticks()
+                enemylist = []
+                lasta = 0
+                lastc = 0
+                playerstate = 0 
+                score = 0
+                start = 0
+                end = 0
+                continue
+            elif start == 0: 
+                start = 1
+                startTime = pygame.time.get_ticks()
+            elif start == 1:
+                playerstate = 1-playerstate
+                
+    if end == 1:
+        myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
+        scoreText = myFont.render(f"점수 : {score}", True,white)
+        screen.blit(scoreText, (300, 200))
+        screen.blit(again, (370,330))
+        pygame.display.flip()
+        continue
+    
     if playerstate == 0:
         screen.blit(player1, (335, 200))
     else:
         screen.blit(player2, (335, 200))
-    scoreText = myFont.render(f"{score}", True,white)
-    screen.blit(scoreText, (380, 10))
-    tjfaudText = tjfaudFont.render("마우스 클릭으로 플레이", True,white)
-    screen.blit(tjfaudText, (280, 490))
+        
+    scoreText = myFont.render(f"{score}점", True,white)
+    screen.blit(scoreText, (350, 10))
+    if start == 1:
+        tjfaudText = tjfaudFont.render("마우스 클릭으로 플레이", True,white)
+        screen.blit(tjfaudText, (280, 490))
+    else:
+        tjfaudText = tjfaudFont.render("- Click To Start -", True,white)
+        screen.blit(tjfaudText, (300, 490))
     
+    if start == 0:
+        pygame.display.flip()
+        continue
+        
     dell = -1
     for i in range(len(enemylist)):
         enemylist[i][0][0] += enemylist[i][1]*speed
@@ -79,19 +127,21 @@ while running:
                     if (enemylist[i][1] == 1 and enemylist[i][2] == 0) or (enemylist[i][1] == -1 and enemylist[i][2] == 1):
                         score += 10
                     else:
-                        running = False
+                        time.sleep(1)
+                        end = 1
                 else:
                     if (enemylist[i][1] == 1 and enemylist[i][2] == 1) or (enemylist[i][1] == -1 and enemylist[i][2] == 0):
                         score += 10
                     else:
-                        running = False
+                        time.sleep(1)
+                        end = 1
                 if enemylist[i][2] == 0:
                     test = pygame.image.load("이미지 저장\\red.png")
                     test = pygame.transform.scale(test,(e_size,e_size))
                 else:
                     test = pygame.image.load("이미지 저장\\blue.png")
                     test = pygame.transform.scale(test,(e_size,e_size))
-                test.set_alpha(200)
+                test.set_alpha(180)
                 enemylist[i].append(test)
             screen.blit(circles[enemylist[i][2]], tuple(enemylist[i][0]))
     if dell != -1:
@@ -118,26 +168,4 @@ while running:
             direc = -1
             enemylist.append([s_pos, direc, c])
             
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mouse_pos = event.pos
-            playerstate = 1-playerstate
     pygame.display.flip()
-
-running = True
-while running:
-    screen.fill(bgcolor)
-    
-    myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
-    scoreText = myFont.render(f"점수 : {score}", True,white)
-    screen.blit(scoreText, (300, 250))
-    pygame.display.flip()
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
